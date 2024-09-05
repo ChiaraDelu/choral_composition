@@ -50,6 +50,15 @@ def transpose_chord(chord, key_offset):
     return transposed_chord
 
 #%%
+chordq = [0, 4, 7]
+key_offsetq = 1
+transpose_chord(chordq, key_offsetq)
+#universal_chord_progressions, 0, user_key
+universal_chord_progressions = [0, 4, 7]
+user_key = 1
+
+#%%
+
 # Function to transpose chords to a new key
 def generate_chords(melody, key):
     # Define chord progressions for SATB voices
@@ -107,7 +116,7 @@ key = input("Enter the musical key (e.g., C, D#, E): ")
 melody = input("Enter the melody line (e.g., D F# A D): ").split()
 
 # Generate and display the chords
-soprano, alto, tenor, bass = generate_chords(melody, key)
+soprano, alto, tenor, bass = generate_chords(melodyq, keyq)
 
 # Convert numerical notes to alphabet
 soprano_str = [chromatic_to_note(note) if isinstance(note, int) else note for note in soprano]
@@ -136,6 +145,7 @@ rhythm_durations = {
 melody_with_rhythm = "C E G | C D. G) | Co C | Go."
 
 #%%
+
 # Function to calculate note duration based on rhythm notation, including dotted rhythms
 def get_note_duration(note_with_rhythm):
     base_duration, dot = note_with_rhythm.split(".") if "." in note_with_rhythm else (note_with_rhythm, "")
@@ -146,7 +156,7 @@ def get_note_duration(note_with_rhythm):
 # Debug print to check the notes_with_rhythm
 print("Notes with Rhythm:", melody_with_rhythm)
 # Transpose the universal chord progressions to the user's selected key
-chord_progressions_in_key = transpose_chord(universal_cchord_progressions, 0, user_key)
+chord_progressions_in_key = transpose_chord(universal_chord_progressions, 1)#, user_key)
 
 
 #%%
@@ -181,4 +191,54 @@ music_score.append(bass_part)
 # Show the music score (or export it to a file)
 music_score.show()
 
+
+
+
+
+
 #%%
+
+from music21 import stream, note
+
+# Create a music21 Stream to hold the SATB parts
+music_score = stream.Score()
+
+# Create separate music21 Streams for each voice
+soprano_part = stream.Part()
+alto_part = stream.Part()
+tenor_part = stream.Part()
+bass_part = stream.Part()
+
+durationq = "o"
+# Add the SATB parts to their respective streams
+for chord in soprano:
+    soprano_part.append(note.Note(chord))#, duration=durationq))
+for chord in alto:
+    alto_part.append(note.Note(chord)) #, duration=durationq))
+for chord in tenor:
+    tenor_part.append(note.Note(chord))#, duration=durationq))
+for chord in bass:
+    bass_part.append(note.Note(chord))#, duration=durationq))
+
+
+# Append the voice parts to the main score
+music_score.append(soprano_part)
+music_score.append(alto_part)
+music_score.append(tenor_part)
+music_score.append(bass_part)
+
+# Show the music score (or export it to a file)
+music_score.show()
+
+#%%
+# Definizione della melodia come una lista di note (ad esempio)
+melodyq = ["C", "E", "G", "A", "F", "G"]
+
+# Definizione della tonalità (ad esempio, Do maggiore)
+keyq = "C"
+generate_chords(melodyq, keyq)
+
+#soprano
+
+#%%
+note.Note(soprano[0])
